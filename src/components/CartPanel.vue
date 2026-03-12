@@ -1,110 +1,120 @@
 <script setup>
-import { computed } from "vue"
-
 const props = defineProps({
-  cart: Array
+  cart: Array,
+  subtotal: Number,
+  shipping: Number,
+  total: Number
 })
 
-const total = computed(() =>
-  props.cart.reduce((sum, item) => sum + item.price * item.qty, 0)
-)
+const emit = defineEmits([
+  "increase",
+  "decrease",
+  "remove"
+])
+
 </script>
 
 <template>
-  <div class="cartpanel">
-    <h3>Cart</h3>
 
-    <div v-if="cart.length === 0" class="empty">
-      ยังไม่มีสินค้า
-    </div>
+  <div class="cart">
+
+    <p v-if="cart.length === 0" class="empty">
+    ยังไม่มีสินค้าในตะกร้า
+    </p>
 
     <div v-for="item in cart" :key="item.id" class="cart-item">
 
-      <img :src="item.image" class="cart-img">
+      <img :src="item.image" class="thumb">
 
       <div class="info">
-        <strong>{{ item.name }}</strong>
+        <p>{{ item.name }}</p>
         <p>฿ {{ item.price }}</p>
       </div>
 
+      <!-- ปุ่มเพิ่มลด -->
       <div class="qty">
-        x {{ item.qty }}
+
+        <button @click="emit('decrease', item)">-</button>
+
+        <span>{{ item.qty }}</span>
+
+        <button @click="emit('increase', item)">+</button>
+
       </div>
 
-      <div class="subtotal">
-        ฿ {{ item.price * item.qty }}
-      </div>
+      <button class="remove" @click="emit('remove', item)">
+        🗑
+      </button>
 
     </div>
 
-    <hr/>
+    <hr>
 
-    <div class="summary">
-      <h2>Total</h2>
-      <h2>฿ {{ total }}</h2>
-    </div>
+    <p v-if="cart.length > 0">ยอดรวมสินค้า {{ subtotal }}</p>
 
-    <button class="buy">Buy</button>
+    <p v-if="cart.length > 0">
+      ค่าจัดส่ง {{ shipping }}
+    </p>
+
+    <h3 v-if="cart.length > 0">
+      Total ฿ {{ total }}
+    </h3>
+
+    <button v-if="cart.length > 0" class="buy">
+Buy
+</button>
 
   </div>
+
 </template>
 
 <style>
-.cartpanel{
-  border:1px solid #ddd;
-  padding:20px;
-  border-radius:10px;
-}
-
-.cart-item{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px 0;
-}
-
-.cart-img{
-  width:50px;
-  height:50px;
-  object-fit:contain;
-}
-
-.info{
-  flex:2;
-}
-
-.qty{
-  width:40px;
-  text-align:center;
-}
-
-.subtotal{
-  margin-left:auto;
-}
-
-.summary{
-  display:flex;
-  justify-content:space-between;
-}
-
-.buy{
-  width:100%;
-  padding:10px;
-  margin-top:10px;
-  background:#4CAF50;
-  color:white;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-.buy:hover{
-  background:#45a049;
+.cart {
+  border-left: 2px solid black;
+  padding: 20px;
 }
 
 .empty{
   text-align:center;
-  color:#888;
-  padding:20px;
+  color:gray;
+  margin-bottom:10px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.qty button {
+  width: 25px;
+  height: 25px;
+}
+
+.remove {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+
+.buy {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
 }
 </style>
