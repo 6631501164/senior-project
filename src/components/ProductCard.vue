@@ -8,8 +8,7 @@ const emit = defineEmits(["add"])
 
 <template>
   <div class="card">
-    <div class="image"></div>
-
+    <img :src="product.image" class="image">
     <h4>{{ product.name }}</h4>
     <p>฿ {{ product.price }}</p>
 
@@ -22,11 +21,15 @@ const emit = defineEmits(["add"])
   border:1px solid #ddd;
   padding:15px;
   text-align:center;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
 }
 
 .image{
-  height:120px;
-  background:#eee;
+  width:100%;
+  height:150px;
+  object-fit:contain;
   margin-bottom:10px;
 }
 </style>
