@@ -1,11 +1,24 @@
+<script setup>
+defineProps({
+  search: String,
+  cartCount: Number,
+  total: Number
+})
+const emit = defineEmits(["update:search"])
+</script>
+
 <template>
   <div class="navbar">
     <h2>MFU</h2>
 
-    <input placeholder="Search products" />
+    <input
+      :value="search"
+      @input="emit('update:search',$event.target.value)"
+      placeholder="Search products"
+    />
 
     <div class="cart">
-      🛒
+      🛒 {{ cartCount }} ชิ้น
     </div>
   </div>
 </template>
@@ -15,6 +28,6 @@
   display:flex;
   justify-content:space-between;
   padding:15px;
-  background:#f2f2f2;
+  border-bottom:2px solid black;
 }
 </style>

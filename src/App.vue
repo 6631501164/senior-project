@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from "vue"
+import Navbar from "./components/Navbar.vue"
 import ProductCard from "./components/ProductCard.vue"
 import CartPanel from "./components/CartPanel.vue"
 
@@ -20,150 +21,86 @@ const products = [
 ]
 
 const cart = ref([])
-
-const sortedCart = computed(() => {
-  return [...cart.value].sort((a, b) => {
-
-    if (a.type === "single" && b.type === "pack") return -1
-    if (a.type === "pack" && b.type === "single") return 1
-
-    return a.size - b.size
-  })
-})
+const search = ref("")
 
 function addToCart(product) {
   const item = cart.value.find(i => i.id === product.id)
-
-  if (item) {
-    item.qty++
-  } else {
-    cart.value.push({ ...product, qty: 1 })
-  }
-}
-
-const search = ref("")
-
-const filteredProducts = computed(() => {
-  return products
-    .filter(p =>
-      p.name.toLowerCase().includes(search.value.toLowerCase())
-    )
-    .sort((a, b) => {
-
-      if (a.type === "single" && b.type === "pack") return -1
-      if (a.type === "pack" && b.type === "single") return 1
-
-      return a.size - b.size
-    })
-})
-
-function increaseQty(product) {
-  const item = cart.value.find(i => i.id === product.id)
   if (item) item.qty++
+  else cart.value.push({ ...product, qty: 1 })
 }
 
-function decreaseQty(product) {
-  const item = cart.value.find(i => i.id === product.id)
-  if (item && item.qty > 1) {
-    item.qty--
-  }
+function increaseQty(p){
+  const i = cart.value.find(x => x.id === p.id)
+  if(i) i.qty++
 }
 
-function removeItem(product) {
-  cart.value = cart.value.filter(i => i.id !== product.id)
+function decreaseQty(p){
+  const i = cart.value.find(x => x.id === p.id)
+  if(i && i.qty > 1) i.qty--
 }
+
+function removeItem(p){
+  cart.value = cart.value.filter(i => i.id !== p.id)
+}
+
+const filteredProducts = computed(() =>
+  products.filter(p =>
+    p.name.toLowerCase().includes(search.value.toLowerCase())
+  )
+)
 
 const subtotal = computed(() =>
-  cart.value.reduce((sum, i) => sum + i.price * i.qty, 0)
+  cart.value.reduce((s,i)=> s + i.price*i.qty,0)
 )
 
 const cartCount = computed(() =>
-  cart.value.reduce((sum, i) => sum + i.qty, 0)
+  cart.value.reduce((s,i)=> s + i.qty,0)
 )
 
 const shipping = 10
 
-const total = computed(() => {
-  if (cart.value.length === 0) {
-    return 0
-  }
-  return subtotal.value + shipping
-})
+const total = computed(() =>
+  cart.value.length === 0 ? 0 : subtotal.value + shipping
+)
 </script>
 
 <template>
-
   <div class="container">
 
-    <!-- HEADER -->
-    <header class="header">
-
-      <h2>MFU</h2>
-
-      <input v-model="search" type="text" placeholder="Search products" class="search">
-
-      <div class="cart-top">
-        🛒 {{ cartCount }} | ฿ {{ total }}
-      </div>
-
-    </header>
-
+    <Navbar
+      :search="search"
+      :cartCount="cartCount"
+      :total="total"
+      @update:search="val => search = val"
+    />
 
     <div class="layout">
 
-      <!-- PRODUCT -->
       <div class="products">
-
-        <ProductCard v-for="p in filteredProducts" :key="p.id" :product="p" @add="addToCart" />
-
+        <ProductCard
+          v-for="p in filteredProducts"
+          :key="p.id"
+          :product="p"
+          @add="addToCart"
+        />
       </div>
 
-      <!-- CART -->
-      <CartPanel :cart="sortedCart" :subtotal="subtotal" :shipping="shipping" :total="total" @increase="increaseQty"
-        @decrease="decreaseQty" @remove="removeItem" />
+      <CartPanel
+        :cart="cart"
+        :subtotal="subtotal"
+        :shipping="shipping"
+        :total="total"
+        @increase="increaseQty"
+        @decrease="decreaseQty"
+        @remove="removeItem"
+      />
 
     </div>
-
   </div>
-
 </template>
 
-
 <style>
-.container {
-  max-width: 1200px;
-  margin: auto;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px;
-  border-bottom: 2px solid black;
-}
-
-.search {
-  width: 400px;
-  padding: 8px;
-  border: 2px solid black;
-}
-
-.cart-top {
-  border: 2px solid black;
-  padding: 8px 15px;
-}
-
-.layout {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 20px;
-  padding: 20px;
-}
-
-.products {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
+.container{max-width:1200px;margin:auto;}
+.layout{display:grid;grid-template-columns:3fr 1fr;gap:20px;padding:20px;}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
 </style>
