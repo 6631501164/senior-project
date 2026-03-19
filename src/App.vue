@@ -11,6 +11,9 @@ import img35012 from "./assets/products/35012.jpg"
 import img60012 from "./assets/products/60012.jpg"
 import img15006 from "./assets/products/15006.jpg"
 
+import { watch, onMounted } from "vue"
+
+
 const products = [
   { id: 1, name: "ขวดเล็ก 350 มล.", price: 5, image: img350, size: 350, type: "single" },
   { id: 2, name: "ขวดกลาง 600 มล.", price: 7, image: img600, size: 600, type: "single" },
@@ -22,6 +25,15 @@ const products = [
 
 const cart = ref([])
 const search = ref("")
+
+watch(cart, (newCart) => {
+  localStorage.setItem("cart", JSON.stringify(newCart))
+}, { deep: true })
+
+onMounted(() => {
+  const saved = localStorage.getItem("cart")
+  if (saved) cart.value = JSON.parse(saved)
+})
 
 function addToCart(product) {
   const item = cart.value.find(i => i.id === product.id)
@@ -62,6 +74,7 @@ const shipping = 10
 const total = computed(() =>
   cart.value.length === 0 ? 0 : subtotal.value + shipping
 )
+
 </script>
 
 <template>
