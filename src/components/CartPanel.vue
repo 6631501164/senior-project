@@ -1,4 +1,6 @@
 <script setup>
+import { Trash2, Plus, Minus } from "Lucide-vue-next"
+
 const props = defineProps({
   cart: Array,
   subtotal: Number,
@@ -19,7 +21,7 @@ const emit = defineEmits([
   <div class="cart">
 
     <p v-if="cart.length === 0" class="empty">
-    ยังไม่มีสินค้าในตะกร้า
+      ยังไม่มีสินค้าในตะกร้า
     </p>
 
     <div v-for="item in cart" :key="item.id" class="cart-item">
@@ -34,18 +36,21 @@ const emit = defineEmits([
       <!-- ปุ่มเพิ่มลด -->
       <div class="qty">
 
-        <button @click="emit('decrease', item)">-</button>
+        <button @click="emit('decrease', item)">
+          <Minus size="16" />
+        </button>
 
         <span>{{ item.qty }}</span>
 
-        <button @click="emit('increase', item)">+</button>
+        <button @click="emit('increase', item)">
+          <Plus size="16" />
+        </button>
 
       </div>
 
       <button class="remove" @click="emit('remove', item)">
-        🗑
+        <Trash2 size="18" />
       </button>
-
     </div>
 
     <hr>
@@ -61,8 +66,8 @@ const emit = defineEmits([
     </h3>
 
     <button v-if="cart.length > 0" class="buy">
-Buy
-</button>
+      Buy
+    </button>
 
   </div>
 
@@ -74,10 +79,10 @@ Buy
   padding: 20px;
 }
 
-.empty{
-  text-align:center;
-  color:gray;
-  margin-bottom:10px;
+.empty {
+  text-align: center;
+  color: gray;
+  margin-bottom: 10px;
 }
 
 .cart-item {

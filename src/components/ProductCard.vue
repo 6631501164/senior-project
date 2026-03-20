@@ -3,7 +3,7 @@ const props = defineProps({
   product: Object
 })
 
-const emit = defineEmits(["add"])
+const emit = defineEmits(["add"]) // สร้าง event เพื่อส่งข้อมูลสินค้าไปยัง component แม่ (App.vue) เมื่อมีการคลิกปุ่ม Add
 </script>
 
 <template>
