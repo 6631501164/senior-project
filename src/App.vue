@@ -35,6 +35,15 @@ onMounted(() => {
 })
 
 
+watch(cart, (newCart) => {
+  localStorage.setItem("cart", JSON.stringify(newCart))
+}, { deep: true })
+
+onMounted(() => {
+  const saved = localStorage.getItem("cart")
+  if (saved) cart.value = JSON.parse(saved)
+})
+
 function addToCart(product) {
   const item = cart.value.find(i => i.id === product.id) // find=เพื่อเช็คว่ามีสินค้าในตะกร้าหรือยัง เพื่อไม่ให้สินค้าตัวเดิมเพิ่มแถวใหม่ซ้ำๆ
   if (item) item.qty++ // ถ้ามีแล้วให้เพิ่มจำนวน, qty=จำนวนสินค้าในตะกร้า
@@ -92,6 +101,7 @@ const shipping = 10 // ค่าจัดส่งคงที่
 const total = computed(() =>
   cart.value.length === 0 ? 0 : subtotal.value + shipping // ถ้าไม่มีสินค้า ไม่คิดค่าส่ง
 )
+
 </script>
 
 <template>
