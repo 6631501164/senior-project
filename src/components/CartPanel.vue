@@ -1,125 +1,45 @@
 <script setup>
-import { Trash2, Plus, Minus } from "Lucide-vue-next"
-
-const props = defineProps({
-  cart: Array,
-  subtotal: Number,
-  shipping: Number,
-  total: Number
-})
-
-const emit = defineEmits([
-  "increase",
-  "decrease",
-  "remove"
-])
-
+import { Trash2, Plus, Minus, ShoppingBag } from "lucide-vue-next"
+const props = defineProps({ cart: Array, subtotal: Number, shipping: Number, total: Number })
+const emit = defineEmits(["increase", "decrease", "remove"])
 </script>
 
 <template>
-
-  <div class="cart">
-
-    <p v-if="cart.length === 0" class="empty">
-      ยังไม่มีสินค้าในตะกร้า
-    </p>
-
-    <div v-for="item in cart" :key="item.id" class="cart-item">
-
-      <img :src="item.image" class="thumb">
-
-      <div class="info">
-        <p>{{ item.name }}</p>
-        <p>฿ {{ item.price }}</p>
-      </div>
-
-      <!-- ปุ่มเพิ่มลด -->
-      <div class="qty">
-
-        <button @click="emit('decrease', item)">
-          <Minus size="16" />
-        </button>
-
-        <span>{{ item.qty }}</span>
-
-        <button @click="emit('increase', item)">
-          <Plus size="16" />
-        </button>
-
-      </div>
-
-      <button class="remove" @click="emit('remove', item)">
-        <Trash2 size="18" />
-      </button>
+  <div class="p-5 space-y-4">
+    <div class="flex items-center gap-2 pb-2 border-b">
+      <ShoppingBag class="text-yellow-500" size="20" />
+      <h3 class="font-bold text-gray-800">ตะกร้าของคุณ</h3>
     </div>
 
-    <hr>
+    <p v-if="cart.length === 0" class="py-10 text-center text-gray-400 italic">ตะกร้าว่างเปล่า...</p>
 
-    <p v-if="cart.length > 0">ยอดรวมสินค้า {{ subtotal }}</p>
+    <div v-for="item in cart" :key="item.id" class="flex items-center gap-3 bg-gray-50 p-2 rounded-xl border border-gray-100">
+      <img :src="item.image" class="w-14 h-14 object-contain bg-white rounded-lg shadow-sm" />
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-bold text-gray-800 truncate">{{ item.name }}</p>
+        <p class="text-xs text-red-500 font-bold">฿ {{ item.price }}</p>
+      </div>
 
-    <p v-if="cart.length > 0">
-      ค่าจัดส่ง {{ shipping }}
-    </p>
+      <div class="flex flex-col items-center gap-1">
+        <div class="flex items-center bg-white rounded-lg border shadow-sm">
+          <button @click="emit('decrease', item)" class="p-1 hover:text-red-500"><Minus size="14" /></button>
+          <span class="px-2 text-xs font-bold">{{ item.qty }}</span>
+          <button @click="emit('increase', item)" class="p-1 hover:text-green-500"><Plus size="14" /></button>
+        </div>
+        <button @click="emit('remove', item)" class="text-gray-300 hover:text-red-500 transition-colors"><Trash2 size="14" /></button>
+      </div>
+    </div>
 
-    <h3 v-if="cart.length > 0">
-      Total ฿ {{ total }}
-    </h3>
-
-    <button v-if="cart.length > 0" class="buy">
-      Buy
-    </button>
-
+    <div v-if="cart.length > 0" class="pt-4 mt-4 border-t border-dashed border-gray-200 space-y-2">
+      <div class="flex justify-between text-sm text-gray-600"><span>รวมสินค้า:</span><span>฿ {{ subtotal }}</span></div>
+      <div class="flex justify-between text-sm text-gray-600"><span>ค่าจัดส่ง:</span><span>฿ {{ shipping }}</span></div>
+      <div class="flex justify-between items-end pt-2">
+        <span class="font-bold text-gray-800">ยอดสุทธิ:</span>
+        <span class="text-2xl font-black text-red-600 font-mono">฿ {{ total }}</span>
+      </div>
+      <button class="w-full mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-green-100 transition-all active:scale-95 uppercase tracking-wider">
+        ชำระเงิน
+      </button>
+    </div>
   </div>
-
 </template>
-
-<style>
-.cart {
-  border-left: 2px solid black;
-  padding: 20px;
-}
-
-.empty {
-  text-align: center;
-  color: gray;
-  margin-bottom: 10px;
-}
-
-.cart-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.thumb {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-}
-
-.qty {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.qty button {
-  width: 25px;
-  height: 25px;
-}
-
-.remove {
-  background: red;
-  color: white;
-  border: none;
-  padding: 5px 8px;
-  cursor: pointer;
-}
-
-.buy {
-  width: 100%;
-  margin-top: 10px;
-  padding: 10px;
-}
-</style>
