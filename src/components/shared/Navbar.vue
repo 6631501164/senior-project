@@ -5,7 +5,6 @@ defineProps({
   total: Number
 })
 
-// เพิ่ม "open-order" (ไปหน้าออเดอร์) และ "go-home" (กลับหน้าสินค้า)
 const emit = defineEmits(["update:search", "open-order", "go-home"])
 </script>
 
@@ -13,18 +12,18 @@ const emit = defineEmits(["update:search", "open-order", "go-home"])
   <nav class="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
     <div class="max-w-[1400px] mx-auto px-4 py-3 flex items-center justify-between gap-4">
 
-      <div @click="emit('go-home')" class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
+      <div @click="emit('go-home')" class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity shrink-0">
         <div class="bg-yellow-400 p-1.5 rounded-lg">
           <h2 class="text-2xl font-black text-red-600 leading-none">MFU</h2>
         </div>
-        <span class="hidden md:block font-bold text-gray-700">M-STORE</span>
+        <span class="hidden md:block font-bold text-gray-700 uppercase tracking-tighter">M-STORE</span>
       </div>
 
       <div class="flex-1 max-w-2xl relative group">
         <input
           :value="search"
           @input="emit('update:search', $event.target.value)"
-          placeholder="ค้นหาน้ำดื่มลานดาว..."
+          placeholder="ค้นหา..."
           class="w-full pl-4 pr-10 py-2.5 bg-gray-100 border-transparent rounded-xl focus:bg-white focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all outline-none text-sm"
         />
         <div class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
@@ -34,17 +33,7 @@ const emit = defineEmits(["update:search", "open-order", "go-home"])
         </div>
       </div>
 
-      <div class="flex items-center gap-3">
-        <div class="text-right hidden sm:block">
-          <p class="text-[10px] text-gray-500 uppercase font-bold">ยอดรวม</p>
-          <p class="text-sm font-black text-red-600">฿ {{ total }}</p>
-        </div>
-        <div @click="$emit('open-admin')" class="flex items-center gap-2 cursor-pointer border-r pr-4">
-  <div class="bg-yellow-400 p-1.5 rounded-lg">
-    <h2 class="text-2xl font-black text-red-600 leading-none">MFU</h2>
-  </div>
-  <span class="hidden md:block font-bold text-gray-700 uppercase">Admin Hub</span>
-</div>
+      <div class="flex items-center gap-3 shrink-0">
         <div 
           @click="emit('open-order')" 
           class="relative bg-gray-100 p-2.5 rounded-xl hover:bg-yellow-400 hover:text-white transition-all cursor-pointer group shadow-sm active:scale-90"
