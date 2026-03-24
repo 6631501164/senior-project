@@ -22,56 +22,56 @@ const handleLogin = () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-yellow-100 via-white to-yellow-50 p-6">
+  <div class="min-h-screen flex items-center justify-center bg-[#FFF5EB] p-6 relative overflow-hidden text-left">
     
-    <div class="w-full max-w-md relative">
-      <div class="absolute -top-16 -right-16 w-40 h-40 bg-yellow-200 rounded-full mix-blend-multiply filter blur-2xl opacity-60 animate-blob"></div>
-      <div class="absolute -bottom-16 -left-16 w-40 h-40 bg-yellow-100 rounded-full mix-blend-multiply filter blur-2xl opacity-60 animate-blob animation-delay-2000"></div>
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-[#A0C4FF]/20 rounded-full blur-3xl animate-blob"></div>
+    <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-[#BDB2FF]/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
 
-      <div class="relative bg-white/90 backdrop-blur-3xl rounded-[3.5rem] shadow-[0_40px_80px_-15px_rgba(234,179,8,0.1)] border border-yellow-100 p-10 overflow-hidden">
+    <div class="w-full max-w-md relative">
+      <div class="relative bg-white/90 backdrop-blur-xl rounded-[3.5rem] shadow-[0_32px_64px_-15px_rgba(255,187,0,0.1)] border border-orange-100 p-10 overflow-hidden">
         
         <div class="text-center mb-10">
-          <div class="inline-flex items-center justify-center bg-yellow-400 w-20 h-20 rounded-[2.2rem] shadow-lg shadow-yellow-200/50 mb-5 transform -rotate-6">
-            <h2 class="text-3xl font-black text-red-600">MFU</h2>
+          <div class="inline-flex items-center justify-center bg-[#FFD100] w-20 h-20 rounded-[2.2rem] shadow-lg shadow-yellow-200/50 mb-5 transform -rotate-6 group-hover:rotate-0 transition-transform duration-500">
+            <h2 class="text-3xl font-black text-red-600 tracking-tighter">MFU</h2>
           </div>
-          <h1 class="text-3xl font-black text-slate-800 tracking-tight">M-Store Login</h1>
-          <p class="text-slate-500 font-medium mt-1">น้ำดื่มลานดาว บริการส่งถึงที่</p>
+          <h1 class="text-3xl font-black text-slate-800 tracking-tighter italic uppercase">น้ำดื่ม ลานดาว</h1>
+          <p class="text-slate-400 font-bold text-[11px] uppercase tracking-[0.2em] mt-2">Management System Login</p>
         </div>
 
         <transition name="fade">
-          <div v-if="error" class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-2xl text-red-600 text-sm font-bold animate-pulse">
+          <div v-if="error" class="mb-6 p-4 bg-red-50 border-l-4 border-red-400 rounded-r-2xl text-red-500 text-xs font-black italic">
             {{ error }}
           </div>
         </transition>
 
-        <div class="space-y-6">
+        <div class="space-y-5">
           <div class="group">
-            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-6 mb-2 group-focus-within:text-yellow-600 transition-colors">Username</label>
+            <label class="block text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] ml-6 mb-2 group-focus-within:text-[#FFB300] transition-colors">Username</label>
             <div class="relative">
-              <User class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-yellow-500 transition-all" size="18" />
+              <User class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-200 group-focus-within:text-[#FFD100] transition-all" size="18" />
               <input v-model="username" type="text" placeholder="ชื่อผู้ใช้งาน" 
-                class="w-full pl-14 pr-6 py-4 bg-slate-50 border-2 border-transparent rounded-[2rem] focus:bg-white focus:border-yellow-400 focus:ring-4 focus:ring-yellow-50 transition-all outline-none font-bold text-slate-700">
+                class="w-full pl-14 pr-6 py-4 bg-[#FAFAFA] border-2 border-transparent rounded-[1.8rem] focus:bg-white focus:border-[#FFD100] focus:ring-4 focus:ring-[#FFD100]/5 transition-all outline-none font-bold text-slate-700">
             </div>
           </div>
 
           <div class="group">
-            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-6 mb-2 group-focus-within:text-yellow-600 transition-colors">Password</label>
+            <label class="block text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] ml-6 mb-2 group-focus-within:text-[#FFB300] transition-colors">Password</label>
             <div class="relative">
-              <Lock class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-yellow-500 transition-all" size="18" />
+              <Lock class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-200 group-focus-within:text-[#FFD100] transition-all" size="18" />
               <input v-model="password" type="password" placeholder="••••••••" 
-                class="w-full pl-14 pr-6 py-4 bg-slate-50 border-2 border-transparent rounded-[2rem] focus:bg-white focus:border-yellow-400 focus:ring-4 focus:ring-yellow-50 transition-all outline-none font-bold text-slate-700">
+                class="w-full pl-14 pr-6 py-4 bg-[#FAFAFA] border-2 border-transparent rounded-[1.8rem] focus:bg-white focus:border-[#FFD100] focus:ring-4 focus:ring-[#FFD100]/5 transition-all outline-none font-bold text-slate-700">
             </div>
           </div>
 
           <button @click="handleLogin" 
-            class="w-full group mt-4 bg-red-600 hover:bg-red-700 text-white font-black py-5 rounded-[2rem] shadow-xl shadow-red-200 transition-all active:scale-95 flex items-center justify-center gap-3">
+            class="w-full group mt-6 bg-[#FFB300] hover:bg-[#FFA000] text-white font-black py-5 rounded-[1.8rem] shadow-xl shadow-orange-100 transition-all active:scale-95 flex items-center justify-center gap-3">
             เข้าสู่ระบบเลย
             <ArrowRight class="group-hover:translate-x-2 transition-transform" size="20" />
           </button>
         </div>
 
         <div class="mt-10 text-center">
-          <p class="text-[10px] text-slate-300 font-bold uppercase tracking-widest">จำกัดสิทธิ์เฉพาะสมาชิกเท่านั้น</p>
+          <p class="text-[10px] text-slate-300 font-black uppercase tracking-widest italic leading-none">น้ำดื่มลานดาว • มหาวิทยาลัยแม่ฟ้าหลวง</p>
         </div>
       </div>
     </div>
@@ -79,14 +79,13 @@ const handleLogin = () => {
 </template>
 
 <style scoped>
-/* แอนิเมชัน Blobs ขยับไปมานุ่มๆ */
 .animate-blob {
-  animation: blob 10s infinite;
+  animation: blob 10s infinite alternate;
 }
 @keyframes blob {
   0%   { transform: translate(0px, 0px) scale(1); }
-  33%  { transform: translate(40px, -60px) scale(1.2); }
-  66%  { transform: translate(-30px, 20px) scale(0.8); }
+  33%  { transform: translate(30px, -40px) scale(1.1); }
+  66%  { transform: translate(-20px, 20px) scale(0.9); }
   100% { transform: translate(0px, 0px) scale(1); }
 }
 .animation-delay-2000 { animation-delay: 2s; }
