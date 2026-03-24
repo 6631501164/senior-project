@@ -13,7 +13,6 @@ const emit = defineEmits(["close", "update-stock"])
 const currentTab = ref('overview')
 const selectedDate = ref(new Date().toISOString().substr(0, 10))
 
-// สีแดง Crimson MFU: #A00000 | สีเหลือง M-Store: #FFD700
 const statuses = [
   { label: 'รอชำระเงิน', key: 'unpaid', color: '#94a3b8' },
   { label: 'ชำระเงินแล้ว', key: 'paid', color: '#2563eb' },
@@ -46,7 +45,7 @@ const getStatusColor = (key) => statuses.find(s => s.key === key)?.color || '#00
           MFU
         </div>
         <div class="text-center mt-2">
-          <h1 class="font-black text-[#A00000] text-xl leading-none tracking-tighter">M-STORE</h1>
+          <h1 class="font-black text-[#A00000] text-xl leading-none tracking-tighter uppercase">M-STORE</h1>
           <p class="text-[#A00000]/60 text-[10px] font-bold uppercase tracking-[0.2em] mt-1 italic">Admin Console</p>
         </div>
       </div>
@@ -73,19 +72,26 @@ const getStatusColor = (key) => statuses.find(s => s.key === key)?.color || '#00
       
       <header class="flex justify-between items-center mb-10">
         <div class="border-l-8 border-[#A00000] pl-6">
-          <h2 class="text-5xl font-black text-slate-900 tracking-tighter uppercase italic">Overview</h2>
-          <p class="text-slate-400 font-bold text-sm tracking-widest mt-1 uppercase">Management Dashboard</p>
+          <h2 class="text-5xl font-black text-slate-900 tracking-tighter uppercase italic leading-none">
+            {{ currentTab === 'overview' ? 'Overview' : 'Inventory' }}
+          </h2>
+          <p class="text-slate-400 font-bold text-sm tracking-widest mt-2 uppercase">
+             {{ currentTab === 'overview' ? 'Management Dashboard' : 'Stock Control System' }}
+          </p>
         </div>
 
-        <div class="relative group">
+        <div v-if="currentTab === 'overview'" class="relative group">
            <Calendar class="absolute left-5 top-1/2 -translate-y-1/2 text-[#A00000]" size="18" />
            <input type="date" v-model="selectedDate" 
-             class="bg-white border-4 border-[#FFD700] rounded-[2rem] text-sm font-black pl-14 pr-8 py-4 shadow-sm focus:ring-4 focus:ring-yellow-100 outline-none text-slate-700 transition-all">
+             class="bg-white border-4 border-[#FFD700] rounded-[2rem] text-sm font-black pl-14 pr-8 py-4 shadow-sm outline-none text-slate-700 transition-all">
+        </div>
+        <div v-else class="bg-white px-6 py-3 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-3">
+            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">System Active</span>
         </div>
       </header>
 
       <div v-if="currentTab === 'overview'" class="space-y-10">
-        
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
           <div v-for="s in statuses" :key="s.key" 
                class="bg-white p-5 rounded-[2.5rem] border-2 border-slate-100 shadow-sm flex flex-col items-center justify-center gap-2 hover:border-[#FFD700] transition-all transform hover:-translate-y-1">
@@ -96,13 +102,10 @@ const getStatusColor = (key) => statuses.find(s => s.key === key)?.color || '#00
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          
           <div class="bg-[#A00000] p-8 rounded-[3rem] text-white shadow-xl relative overflow-hidden h-40 flex items-center">
             <div class="relative z-10 pl-4">
               <p class="text-red-200/70 text-xs font-black uppercase tracking-[0.2em] mb-2">ยอดขายทั้งหมด</p>
-              <h3 class="text-5xl font-black tracking-tighter italic leading-none uppercase">
-                ฿ {{ totalSales.toLocaleString() }}
-              </h3>
+              <h3 class="text-5xl font-black tracking-tighter italic leading-none uppercase">฿ {{ totalSales.toLocaleString() }}</h3>
             </div>
             <div class="absolute -right-4 -bottom-6 text-8xl font-black italic text-white/5 pointer-events-none uppercase">REVENUE</div>
           </div>
@@ -110,24 +113,13 @@ const getStatusColor = (key) => statuses.find(s => s.key === key)?.color || '#00
           <div class="bg-[#A00000] p-8 rounded-[3rem] text-white shadow-xl relative overflow-hidden h-40 flex items-center">
             <div class="relative z-10 pl-4">
               <p class="text-red-200/70 text-xs font-black uppercase tracking-[0.2em] mb-2">จำนวนออเดอร์</p>
-              <h3 class="text-5xl font-black tracking-tighter leading-none italic uppercase">
-                {{ orderCount }} 
-                <span class="text-2xl font-black uppercase ml-2 opacity-80">Orders</span>
-              </h3>
+              <h3 class="text-5xl font-black tracking-tighter leading-none italic uppercase">{{ orderCount }} <span class="text-2xl font-black uppercase ml-2 opacity-80">Orders</span></h3>
             </div>
             <Package class="absolute right-8 top-1/2 -translate-y-1/2 text-white/10" size="100" />
           </div>
-
         </div>
 
         <div class="bg-white rounded-[3.5rem] shadow-sm border border-slate-100 overflow-hidden">
-          <div class="p-8 border-b border-slate-50 flex justify-between items-center bg-[#FFD700]/10">
-            <h4 class="font-black text-slate-800 text-xl tracking-tighter uppercase italic">Recent Transactions</h4>
-            <div class="flex items-center gap-2">
-               <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
-               <span class="text-[10px] font-black text-slate-400 uppercase">Live Update</span>
-            </div>
-          </div>
           <table class="w-full text-left">
             <thead class="bg-slate-50 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
               <tr>
